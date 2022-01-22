@@ -27,7 +27,7 @@ func main() {
 	go executionEngine.Run()
 
 	time.Sleep(2 * time.Second)
-	// TODO: stateful shutdownのコードを
+	// TODO: graceful shutdownのコードを
 
 	transferer.Close()
 	queryProcessor.Close()
