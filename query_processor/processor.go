@@ -7,11 +7,25 @@ import (
 	"github.com/ddddddO/database/query_processor/parser"
 )
 
-func Process() {
+type queryProcessor struct {
+	recieveQueue <-chan string
+}
+
+func New(queue <-chan string) *queryProcessor {
+	return &queryProcessor{
+		recieveQueue: queue,
+	}
+}
+
+func (p *queryProcessor) Run() error {
 	fmt.Println("Process!")
 
-	parser.Tokenize()
-	parser.Parse()
+	for q := range p.recieveQueue {
+		fmt.Println(q)
 
-	optimizer.Optimize()
+		parser.Tokenize()
+		parser.Parse()
+		optimizer.Optimize()
+	}
+	return nil
 }
