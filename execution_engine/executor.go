@@ -28,3 +28,7 @@ func (e *executionEngine) Run() {
 		s.RecoveryManager()
 	}
 }
+
+func (e *executionEngine) Close() {
+	// noop
+}

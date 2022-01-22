@@ -34,3 +34,7 @@ func (p *queryProcessor) Run() error {
 	}
 	return nil
 }
+
+func (p *queryProcessor) Close() {
+	close(p.sendQueue)
+}

@@ -31,6 +31,6 @@ func (t *transferer) transfer() {
 	}
 }
 
-func (t *transferer) close() {
-
+func (t *transferer) Close() {
+	close(t.sendQueue)
 }
