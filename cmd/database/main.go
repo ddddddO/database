@@ -14,12 +14,17 @@ func main() {
 
 	transfererToQueryprocessorQueue := make(chan string)
 	transferer := transfer.New(transfererToQueryprocessorQueue)
-	queryProcessor := query_processor.New(transfererToQueryprocessorQueue)
+	queryprocessorToExecutionengineQueue := make(chan string)
+	queryProcessor := query_processor.New(
+		transfererToQueryprocessorQueue,
+		queryprocessorToExecutionengineQueue,
+	)
+	executionEngine := execution_engine.New(queryprocessorToExecutionengineQueue)
 
 	go transferer.Run()
 	go queryProcessor.Run()
-
-	execution_engine.Execute()
+	// NOTE: execution_engineが肝だと思う。なので、上のレイヤはモックと考えexecution_engineに重点を置くでもよさそう。
+	go executionEngine.Run()
 
 	time.Sleep(2 * time.Second)
 }

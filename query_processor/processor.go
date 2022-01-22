@@ -9,11 +9,13 @@ import (
 
 type queryProcessor struct {
 	recieveQueue <-chan string
+	sendQueue    chan<- string
 }
 
-func New(queue <-chan string) *queryProcessor {
+func New(rQueue <-chan string, sQueue chan<- string) *queryProcessor {
 	return &queryProcessor{
-		recieveQueue: queue,
+		recieveQueue: rQueue,
+		sendQueue:    sQueue,
 	}
 }
 
@@ -26,6 +28,9 @@ func (p *queryProcessor) Run() error {
 		parser.Tokenize()
 		parser.Parse()
 		optimizer.Optimize()
+
+		// TODO: 実行計画(struct?)を送るイメージ
+		p.sendQueue <- q
 	}
 	return nil
 }
