@@ -27,8 +27,16 @@ func (p *queryProcessor) Run(_ context.Context) error {
 	for q := range p.recieveQueue {
 		fmt.Println(q)
 
-		parser.Tokenize(q.Task.RawQuery)
-		parser.Parse()
+		token, err := parser.Tokenize(q.Task.RawQuery)
+		if err != nil {
+			return err
+		}
+
+		err = parser.Parse(token)
+		if err != nil {
+			return err
+		}
+
 		optimizer.Optimize()
 
 		// TODO: 実行計画(struct?)を送るイメージ
