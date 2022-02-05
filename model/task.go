@@ -10,8 +10,9 @@ type TaskAndConn struct {
 }
 
 type Task struct {
-	State    state  `json:"state"`
-	RawQuery string `json:"raw_query"`
+	State          state  `json:"state"`
+	RawQuery       string `json:"raw_query"`
+	TokenizedQuery string `json:"tokenized_query"`
 }
 
 type state uint

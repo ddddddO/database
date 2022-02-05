@@ -27,7 +27,7 @@ func (p *queryProcessor) Run(_ context.Context) error {
 	for q := range p.recieveQueue {
 		fmt.Println(q)
 
-		parser.Tokenize()
+		parser.Tokenize(q.Task.RawQuery)
 		parser.Parse()
 		optimizer.Optimize()
 
