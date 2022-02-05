@@ -1,6 +1,7 @@
 package execution_engine
 
 import (
+	"context"
 	"fmt"
 
 	s "github.com/ddddddO/database/execution_engine/storage_engine"
@@ -16,7 +17,7 @@ func New(queue <-chan string) *executionEngine {
 	}
 }
 
-func (e *executionEngine) Run() {
+func (e *executionEngine) Run(_ context.Context) {
 	fmt.Println("Execute!")
 
 	for q := range e.recieveQueue {
