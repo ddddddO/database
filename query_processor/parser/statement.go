@@ -2,7 +2,7 @@ package parser
 
 type Statement struct {
 	Kind    statementKind
-	Parseds []*parsed
+	Parseds []*Parsed
 }
 
 type statementKind uint
@@ -19,7 +19,7 @@ const (
 	// etc...
 )
 
-type parsed struct {
+type Parsed struct {
 	Block string
 	Kind  blockKind
 }

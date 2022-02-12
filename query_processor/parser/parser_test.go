@@ -8,7 +8,7 @@ func TestJudgeStatementKind(t *testing.T) {
 	rawQuery := "select 1"
 	wantNextToken := &token{kind: numberToken, num: 1}
 	wantStatementKind := Read
-	wantParsed := &parsed{
+	wantParsed := &Parsed{
 		Block: "select",
 		Kind:  CommandKind,
 	}
@@ -35,7 +35,7 @@ func TestJudgeStatementKind(t *testing.T) {
 
 func TestParseSelectStatement(t *testing.T) {
 	rawQuery := "select * from test_table;"
-	wantParseds := []*parsed{
+	wantParseds := []*Parsed{
 		{Block: "*", Kind: ColumnKind},
 		{Block: "from", Kind: FromPhrase},
 		{Block: "test_table", Kind: FromPhrase},

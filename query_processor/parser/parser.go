@@ -15,10 +15,10 @@ func Parse(token *token) (*Statement, error) {
 
 	statement := &Statement{
 		Kind:    statementKind,
-		Parseds: []*parsed{p},
+		Parseds: []*Parsed{p},
 	}
 
-	var parseds []*parsed
+	var parseds []*Parsed
 	switch statement.Kind {
 	case Read:
 		parseds, err = parseSelectStatement(nextToken)
@@ -35,7 +35,7 @@ func Parse(token *token) (*Statement, error) {
 }
 
 // 第1戻り値は読み進めたtokenの次のtoken
-func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
+func judgeStatementKind(token *token) (*token, statementKind, *Parsed, error) {
 	if token == nil {
 		return nil, Undefined, nil, errors.New("nil token")
 	}
@@ -78,7 +78,7 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 		return nil, Undefined, nil, errors.New("invalid statement")
 	}
 
-	p := &parsed{
+	p := &Parsed{
 		Block: ret,
 		Kind:  CommandKind,
 	}
@@ -86,19 +86,19 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 }
 
 // NOTE: まずselectをパースする実装をする。他は後回しでいいかも
-func parseSelectStatement(token *token) ([]*parsed, error) {
-	parseds := []*parsed{}
+func parseSelectStatement(token *token) ([]*Parsed, error) {
+	parseds := []*Parsed{}
 
 	ret := ""
 	for {
 		// 文の終わり(=tokenがnil or セミコロン)まで進める
 		if (token == nil) || (token.kind == semicolonToken) {
-			parseds = append(parseds, &parsed{Block: ret})
+			parseds = append(parseds, &Parsed{Block: ret})
 			break
 		}
 		// スペースが現れたら次のparsedのblockを作るためret初期化
 		if token.kind == spaceToken {
-			parseds = append(parseds, &parsed{Block: ret})
+			parseds = append(parseds, &Parsed{Block: ret})
 
 			ret = ""
 			token = token.next
@@ -138,18 +138,18 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 }
 
 // TODO:
-func parseInsertStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{Block: "not yet impl"}}, nil
+func parseInsertStatement(token *token) ([]*Parsed, error) {
+	return []*Parsed{{Block: "not yet impl"}}, nil
 }
 
 // TODO:
-func parseUpdateStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{Block: "not yet impl"}}, nil
+func parseUpdateStatement(token *token) ([]*Parsed, error) {
+	return []*Parsed{{Block: "not yet impl"}}, nil
 }
 
 // TODO:
-func parseDeleteStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{Block: "not yet impl"}}, nil
+func parseDeleteStatement(token *token) ([]*Parsed, error) {
+	return []*Parsed{{Block: "not yet impl"}}, nil
 }
 
 // etc...
