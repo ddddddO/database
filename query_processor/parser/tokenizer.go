@@ -30,7 +30,14 @@ func Tokenize(rawQuery string) (*token, error) {
 		}
 
 		// 文字の場合
-		current.kind = stringToken
+		kind := charToken
+		switch atom {
+		case " ":
+			kind = spaceToken
+		case ";":
+			kind = semicolonToken
+		}
+		current.kind = kind
 		current.str = atom
 		prev.next = current
 

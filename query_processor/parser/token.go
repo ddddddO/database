@@ -9,7 +9,10 @@ type token struct {
 
 type kind uint
 
+// NOTE: 数字と文字だけではなく、例えば、スペースやセミコロンも一種の種類として定義した方が扱いやすいかも
 const (
 	numberToken kind = iota
-	stringToken
+	charToken
+	spaceToken
+	semicolonToken
 )

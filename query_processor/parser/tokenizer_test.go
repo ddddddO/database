@@ -17,7 +17,7 @@ func TestTokenize(t *testing.T) {
 		switch token.kind {
 		case numberToken:
 			t.Log(token.num)
-		case stringToken:
+		case charToken:
 			t.Log(token.str)
 		}
 

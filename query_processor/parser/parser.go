@@ -30,6 +30,7 @@ type parsed struct {
 	block string
 }
 
+// NOTE: この関数でやりたいことは何か
 func Parse(token *token) error {
 	i, kind, parsed, err := judgeStatementKind(token)
 	if err != nil {
@@ -59,12 +60,13 @@ func judgeStatementKind(token *token) (int, statementKind, *parsed, error) {
 		if token == nil {
 			break
 		}
-		if token.kind != stringToken {
+		// FIXME:
+		if (token.kind != charToken) && (token.kind != spaceToken) && (token.kind != semicolonToken) {
 			return 0, undefined, nil, errors.New("invalid token")
 		}
 		cnt++
 
-		if token.str == " " {
+		if token.kind == spaceToken {
 			break
 		}
 
