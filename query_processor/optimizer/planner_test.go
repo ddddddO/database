@@ -3,6 +3,7 @@ package optimizer
 import (
 	"testing"
 
+	"github.com/ddddddO/database/model"
 	p "github.com/ddddddO/database/query_processor/parser"
 )
 
@@ -17,14 +18,14 @@ func TestBuildPlan(t *testing.T) {
 		},
 	}
 
-	wantPlan := &plan{
-		nodeType:     seqScan, // 仮置き
-		relationName: "test_table",
-		alias:        "test_table", // 仮置き
-		startupCost:  0.00,         // 仮置き
-		totalCost:    439.99,       // 仮置き
-		planRows:     20,           // 仮置き
-		planWidth:    4,            // 仮置き
+	wantPlan := &model.Plan{
+		NodeType:     model.SeqScan, // 仮置き
+		RelationName: "test_table",
+		Alias:        "test_table", // 仮置き
+		StartupCost:  0.00,         // 仮置き
+		TotalCost:    439.99,       // 仮置き
+		PlanRows:     20,           // 仮置き
+		PlanWidth:    4,            // 仮置き
 	}
 
 	plan, err := buildPlan(statement)
