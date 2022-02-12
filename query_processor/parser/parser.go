@@ -110,6 +110,30 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 		token = token.next
 	}
 
+	prev := parseds[0]
+	// FIXME: bugをはらんでるはず
+	for i, p := range parseds {
+		isColumn := (i == 0 || prev.Kind == ColumnKind) && p.Block != "from"
+		isFromPhrase := p.Block == "from" || prev.Kind == FromPhrase && p.Block != "where"
+		isWherePhrase := (prev.Kind != ColumnKind) && (prev.Kind != FromPhrase)
+
+		if isColumn {
+			p.Kind = ColumnKind
+			prev = p
+			continue
+		}
+		if isFromPhrase {
+			p.Kind = FromPhrase
+			prev = p
+			continue
+		}
+		if isWherePhrase {
+			p.Kind = WherePhrase
+			prev = p
+			continue
+		}
+	}
+
 	return parseds, nil
 }
 
