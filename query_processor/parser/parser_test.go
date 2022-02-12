@@ -29,3 +29,31 @@ func TestJudgeStatementKind(t *testing.T) {
 		t.Errorf("failed parsed block\ngot: %s, want: %s", parsed.block, wantParsedBlock)
 	}
 }
+
+func TestParseSelectStatement(t *testing.T) {
+	rawQuery := "select * from test_table;"
+	wantParseds := []*parsed{
+		{block: "*"},
+		{block: "from"},
+		{block: "test_table"},
+	}
+
+	token, err := Tokenize(rawQuery)
+	if err != nil {
+		t.Fatal(err)
+	}
+	nextToken, _, _, err := judgeStatementKind(token)
+	if err != nil {
+		t.Error(err)
+	}
+	parsed, err := parseSelectStatement(nextToken)
+	if err != nil {
+		t.Error(err)
+	}
+
+	for i, p := range parsed {
+		if *p != *wantParseds[i] {
+			t.Errorf("failed parsed\ngot: %v, want: %v", p, wantParseds[i])
+		}
+	}
+}

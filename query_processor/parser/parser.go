@@ -97,3 +97,8 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 	}
 	return token, kind, p, nil
 }
+
+// NOTE: まずselectをパースする実装をする。他は後回しでいいかも
+func parseSelectStatement(token *token) ([]*parsed, error) {
+	return []*parsed{{block: "dummy"}}, nil
+}
