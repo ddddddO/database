@@ -114,8 +114,8 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 
 	ret := ""
 	for {
-		// 文の終わり(=セミコロン)まで進める
-		if token.kind == semicolonToken {
+		// 文の終わり(=tokenがnil or セミコロン)まで進める
+		if (token == nil) || (token.kind == semicolonToken) {
 			parseds = append(parseds, &parsed{block: ret})
 			break
 		}
