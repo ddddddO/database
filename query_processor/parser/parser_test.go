@@ -25,17 +25,17 @@ func TestJudgeStatementKind(t *testing.T) {
 	if statementKind != wantStatementKind {
 		t.Errorf("failed statement kind\ngot: %d, want: %d", statementKind, wantStatementKind)
 	}
-	if parsed.block != wantParsedBlock {
-		t.Errorf("failed parsed block\ngot: %s, want: %s", parsed.block, wantParsedBlock)
+	if parsed.Block != wantParsedBlock {
+		t.Errorf("failed parsed block\ngot: %s, want: %s", parsed.Block, wantParsedBlock)
 	}
 }
 
 func TestParseSelectStatement(t *testing.T) {
 	rawQuery := "select * from test_table;"
 	wantParseds := []*parsed{
-		{block: "*"},
-		{block: "from"},
-		{block: "test_table"},
+		{Block: "*"},
+		{Block: "from"},
+		{Block: "test_table"},
 	}
 
 	token, err := Tokenize(rawQuery)

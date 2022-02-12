@@ -7,29 +7,6 @@ import (
 )
 
 // NOTE: 完全に雰囲気で実装中
-type Statement struct {
-	Kind    statementKind
-	Parseds []*parsed
-}
-
-type statementKind uint
-
-const (
-	Undefined statementKind = iota
-	Create
-	Read
-	Update
-	Delete
-	CreateTable
-	DropTable
-	AlterTable
-	// etc...
-)
-
-type parsed struct {
-	block string
-}
-
 func Parse(token *token) (*Statement, error) {
 	nextToken, statementKind, p, err := judgeStatementKind(token)
 	if err != nil {
@@ -102,7 +79,7 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 	}
 
 	p := &parsed{
-		block: ret,
+		Block: ret,
 	}
 	return token, kind, p, nil
 }
@@ -115,12 +92,12 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 	for {
 		// 文の終わり(=tokenがnil or セミコロン)まで進める
 		if (token == nil) || (token.kind == semicolonToken) {
-			parseds = append(parseds, &parsed{block: ret})
+			parseds = append(parseds, &parsed{Block: ret})
 			break
 		}
 		// スペースが現れたら次のparsedのblockを作るためret初期化
 		if token.kind == spaceToken {
-			parseds = append(parseds, &parsed{block: ret})
+			parseds = append(parseds, &parsed{Block: ret})
 
 			ret = ""
 			token = token.next
@@ -137,17 +114,17 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 
 // TODO:
 func parseInsertStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{block: "not yet impl"}}, nil
+	return []*parsed{{Block: "not yet impl"}}, nil
 }
 
 // TODO:
 func parseUpdateStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{block: "not yet impl"}}, nil
+	return []*parsed{{Block: "not yet impl"}}, nil
 }
 
 // TODO:
 func parseDeleteStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{block: "not yet impl"}}, nil
+	return []*parsed{{Block: "not yet impl"}}, nil
 }
 
 // etc...
