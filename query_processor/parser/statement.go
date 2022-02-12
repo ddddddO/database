@@ -27,5 +27,8 @@ type parsed struct {
 type blockKind uint
 
 const (
-// TODO: ここから
+	CommandKind blockKind = iota // FIXME: "select"とか"insert"などはこれ。命名直す
+	ColumnKind
+	FromPhrase // from句を構成するblock
+	WherePhrase
 )

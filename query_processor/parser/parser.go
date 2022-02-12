@@ -80,6 +80,7 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 
 	p := &parsed{
 		Block: ret,
+		Kind:  CommandKind,
 	}
 	return token, kind, p, nil
 }
