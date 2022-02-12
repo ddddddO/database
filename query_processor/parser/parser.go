@@ -135,3 +135,20 @@ func parseSelectStatement(token *token) ([]*parsed, error) {
 
 	return parseds, nil
 }
+
+// TODO:
+func parseInsertStatement(token *token) ([]*parsed, error) {
+	return []*parsed{{block: "not yet impl"}}, nil
+}
+
+// TODO:
+func parseUpdateStatement(token *token) ([]*parsed, error) {
+	return []*parsed{{block: "not yet impl"}}, nil
+}
+
+// TODO:
+func parseDeleteStatement(token *token) ([]*parsed, error) {
+	return []*parsed{{block: "not yet impl"}}, nil
+}
+
+// etc...
