@@ -100,5 +100,28 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 
 // NOTE: まずselectをパースする実装をする。他は後回しでいいかも
 func parseSelectStatement(token *token) ([]*parsed, error) {
-	return []*parsed{{block: "dummy"}}, nil
+	parseds := []*parsed{}
+
+	ret := ""
+	for {
+		// 文の終わり(=セミコロン)まで進める
+		if token.kind == semicolonToken {
+			parseds = append(parseds, &parsed{block: ret})
+			break
+		}
+		// スペースが現れたら次のparsedのblockを作るためret初期化
+		if token.kind == spaceToken {
+			parseds = append(parseds, &parsed{block: ret})
+
+			ret = ""
+			token = token.next
+			continue
+		}
+
+		// FIXME: 一旦数字は考えない
+		ret += token.str
+		token = token.next
+	}
+
+	return parseds, nil
 }
