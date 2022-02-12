@@ -32,29 +32,27 @@ type parsed struct {
 
 // NOTE: この関数でやりたいことは何か
 func Parse(token *token) error {
-	i, kind, parsed, err := judgeStatementKind(token)
+	nextToken, statementKind, parsed, err := judgeStatementKind(token)
 	if err != nil {
 		return err
 	}
 
-	_ = i
-	_ = kind
+	_ = nextToken
+	_ = statementKind
 	_ = parsed
 
 	return nil
 }
 
-// 第1戻り値はtokenをどこまで読み進めたかを表わす数
-// TODO: 読み進めたところまでのtokenを返した方が使う側は便利だと思った
-func judgeStatementKind(token *token) (int, statementKind, *parsed, error) {
+// 第1戻り値は読み進めたtokenの次のtoken
+func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 	if token == nil {
-		return 0, undefined, nil, errors.New("nil token")
+		return nil, undefined, nil, errors.New("nil token")
 	}
 
 	// 一旦tokenの先頭からスペースが出るまでまで読み進める
 	// TODO: create table, drop tableなどは未対応
 	ret := ""
-	cnt := 0
 	for {
 		// tokenを最後まで進めた時
 		if token == nil {
@@ -62,11 +60,12 @@ func judgeStatementKind(token *token) (int, statementKind, *parsed, error) {
 		}
 		// FIXME:
 		if (token.kind != charToken) && (token.kind != spaceToken) && (token.kind != semicolonToken) {
-			return 0, undefined, nil, errors.New("invalid token")
+			return nil, undefined, nil, errors.New("invalid token")
 		}
-		cnt++
 
 		if token.kind == spaceToken {
+			// スペースのtokenまで読み進める
+			token = token.next
 			break
 		}
 
@@ -86,11 +85,11 @@ func judgeStatementKind(token *token) (int, statementKind, *parsed, error) {
 	case "delete":
 		kind = delete
 	default:
-		return 0, undefined, nil, errors.New("invalid statement")
+		return nil, undefined, nil, errors.New("invalid statement")
 	}
 
 	p := &parsed{
 		block: ret,
 	}
-	return cnt, kind, p, nil
+	return token, kind, p, nil
 }
