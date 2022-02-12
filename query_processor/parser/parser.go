@@ -32,14 +32,18 @@ type parsed struct {
 
 // NOTE: この関数でやりたいことは何か
 func Parse(token *token) error {
-	nextToken, statementKind, parsed, err := judgeStatementKind(token)
+	nextToken, statementKind, p, err := judgeStatementKind(token)
 	if err != nil {
 		return err
 	}
 
+	statement := &statement{
+		kind:    statementKind,
+		parseds: []*parsed{p},
+	}
+
+	_ = statement
 	_ = nextToken
-	_ = statementKind
-	_ = parsed
 
 	return nil
 }
