@@ -152,3 +152,4 @@ func parseDeleteStatement(token *token) ([]*parsed, error) {
 }
 
 // etc...
+// NOTE: 予感だが、今後のためにcreate tableとinsert文のparseは実装した方がいいかも
