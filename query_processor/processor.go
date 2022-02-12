@@ -11,10 +11,10 @@ import (
 
 type queryProcessor struct {
 	recieveQueue <-chan *model.TaskAndConn
-	sendQueue    chan<- string
+	sendQueue    chan<- *model.TaskAndConn
 }
 
-func New(rQueue <-chan *model.TaskAndConn, sQueue chan<- string) *queryProcessor {
+func New(rQueue <-chan *model.TaskAndConn, sQueue chan<- *model.TaskAndConn) *queryProcessor {
 	return &queryProcessor{
 		recieveQueue: rQueue,
 		sendQueue:    sQueue,
@@ -25,8 +25,6 @@ func (p *queryProcessor) Run(_ context.Context) error {
 	fmt.Println("Process!")
 
 	for q := range p.recieveQueue {
-		fmt.Println(q)
-
 		token, err := parser.Tokenize(q.Task.RawQuery)
 		if err != nil {
 			return err
@@ -41,10 +39,10 @@ func (p *queryProcessor) Run(_ context.Context) error {
 		if err != nil {
 			return err
 		}
-		_ = plan
+		q.Task.Plan = plan
 
-		// TODO: 実行計画(struct?)を送るイメージ
-		p.sendQueue <- q.Task.RawQuery // NOTE: 一旦、そのまま生のクエリを送る
+		// 実行計画をstorage engineに送る
+		p.sendQueue <- q
 	}
 	return nil
 }

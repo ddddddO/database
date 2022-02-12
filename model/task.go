@@ -12,7 +12,7 @@ type TaskAndConn struct {
 type Task struct {
 	State    state  `json:"state"`
 	RawQuery string `json:"raw_query"`
-	Plan     Plan
+	Plan     *Plan
 }
 
 type state uint

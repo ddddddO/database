@@ -19,7 +19,7 @@ func main() {
 
 	transfererToQueryprocessorQueue := make(chan *model.TaskAndConn)
 	transferer := transfer.New(transfererToQueryprocessorQueue)
-	queryprocessorToExecutionengineQueue := make(chan string)
+	queryprocessorToExecutionengineQueue := make(chan *model.TaskAndConn)
 	queryProcessor := query_processor.New(
 		transfererToQueryprocessorQueue,
 		queryprocessorToExecutionengineQueue,
