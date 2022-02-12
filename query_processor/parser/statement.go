@@ -21,4 +21,11 @@ const (
 
 type parsed struct {
 	Block string
+	Kind  blockKind
 }
+
+type blockKind uint
+
+const (
+// TODO: ここから
+)
