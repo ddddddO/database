@@ -31,10 +31,10 @@ type parsed struct {
 }
 
 // NOTE: この関数でやりたいことは何か
-func Parse(token *token) error {
+func Parse(token *token) (*statement, error) {
 	nextToken, statementKind, p, err := judgeStatementKind(token)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	statement := &statement{
@@ -42,10 +42,20 @@ func Parse(token *token) error {
 		parseds: []*parsed{p},
 	}
 
-	_ = statement
-	_ = nextToken
+	var parseds []*parsed
+	switch statement.kind {
+	case read:
+		parseds, err = parseSelectStatement(nextToken)
+	default:
+		err = errors.New("not yet impl")
+	}
+	if err != nil {
+		return nil, err
+	}
 
-	return nil
+	statement.parseds = append(statement.parseds, parseds...)
+
+	return statement, nil
 }
 
 // 第1戻り値は読み進めたtokenの次のtoken

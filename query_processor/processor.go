@@ -32,10 +32,11 @@ func (p *queryProcessor) Run(_ context.Context) error {
 			return err
 		}
 
-		err = parser.Parse(token)
+		statement, err := parser.Parse(token)
 		if err != nil {
 			return err
 		}
+		_ = statement
 
 		optimizer.Optimize()
 
