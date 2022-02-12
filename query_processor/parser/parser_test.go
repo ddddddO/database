@@ -7,7 +7,7 @@ import (
 func TestJudgeStatementKind(t *testing.T) {
 	rawQuery := "select 1"
 	wantNextToken := &token{kind: numberToken, num: 1}
-	wantStatementKind := read
+	wantStatementKind := Read
 	wantParsedBlock := "select"
 
 	token, err := Tokenize(rawQuery)

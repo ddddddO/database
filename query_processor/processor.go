@@ -36,9 +36,8 @@ func (p *queryProcessor) Run(_ context.Context) error {
 		if err != nil {
 			return err
 		}
-		_ = statement
 
-		optimizer.Optimize()
+		optimizer.Optimize(statement)
 
 		// TODO: 実行計画(struct?)を送るイメージ
 		p.sendQueue <- q.Task.RawQuery // NOTE: 一旦、そのまま生のクエリを送る

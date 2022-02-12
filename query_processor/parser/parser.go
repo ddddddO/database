@@ -7,22 +7,22 @@ import (
 )
 
 // NOTE: 完全に雰囲気で実装中
-type statement struct {
-	kind    statementKind
-	parseds []*parsed
+type Statement struct {
+	Kind    statementKind
+	Parseds []*parsed
 }
 
 type statementKind uint
 
 const (
-	undefined statementKind = iota
-	create
-	read
-	update
-	delete
-	createTable
-	dropTable
-	alterTable
+	Undefined statementKind = iota
+	Create
+	Read
+	Update
+	Delete
+	CreateTable
+	DropTable
+	AlterTable
 	// etc...
 )
 
@@ -30,20 +30,20 @@ type parsed struct {
 	block string
 }
 
-func Parse(token *token) (*statement, error) {
+func Parse(token *token) (*Statement, error) {
 	nextToken, statementKind, p, err := judgeStatementKind(token)
 	if err != nil {
 		return nil, err
 	}
 
-	statement := &statement{
-		kind:    statementKind,
-		parseds: []*parsed{p},
+	statement := &Statement{
+		Kind:    statementKind,
+		Parseds: []*parsed{p},
 	}
 
 	var parseds []*parsed
-	switch statement.kind {
-	case read:
+	switch statement.Kind {
+	case Read:
 		parseds, err = parseSelectStatement(nextToken)
 	default:
 		err = errors.New("not yet impl")
@@ -52,7 +52,7 @@ func Parse(token *token) (*statement, error) {
 		return nil, err
 	}
 
-	statement.parseds = append(statement.parseds, parseds...)
+	statement.Parseds = append(statement.Parseds, parseds...)
 
 	return statement, nil
 }
@@ -60,7 +60,7 @@ func Parse(token *token) (*statement, error) {
 // 第1戻り値は読み進めたtokenの次のtoken
 func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 	if token == nil {
-		return nil, undefined, nil, errors.New("nil token")
+		return nil, Undefined, nil, errors.New("nil token")
 	}
 
 	// 一旦tokenの先頭からスペースが出るまでまで読み進める
@@ -73,7 +73,7 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 		}
 		// FIXME:
 		if (token.kind != charToken) && (token.kind != spaceToken) && (token.kind != semicolonToken) {
-			return nil, undefined, nil, errors.New("invalid token")
+			return nil, Undefined, nil, errors.New("invalid token")
 		}
 
 		if token.kind == spaceToken {
@@ -90,15 +90,15 @@ func judgeStatementKind(token *token) (*token, statementKind, *parsed, error) {
 	ret = strings.ToLower(ret)
 	switch ret {
 	case "insert":
-		kind = create
+		kind = Create
 	case "select":
-		kind = read
+		kind = Read
 	case "update":
-		kind = update
+		kind = Update
 	case "delete":
-		kind = delete
+		kind = Delete
 	default:
-		return nil, undefined, nil, errors.New("invalid statement")
+		return nil, Undefined, nil, errors.New("invalid statement")
 	}
 
 	p := &parsed{
