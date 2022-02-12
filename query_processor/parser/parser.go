@@ -30,7 +30,6 @@ type parsed struct {
 	block string
 }
 
-// NOTE: この関数でやりたいことは何か
 func Parse(token *token) (*statement, error) {
 	nextToken, statementKind, p, err := judgeStatementKind(token)
 	if err != nil {
